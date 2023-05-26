@@ -9,22 +9,56 @@ using namespace std;
 
 //constructor that will initialize the data members
 table::table()
-{}
+{
+	root = nullptr;
+}
 //destructor to deallocate the data members
 table::~table()
 {}
-//add a travel item that's passed in as an argument and add it to the hash table
-int table::insert(const client & to_key)
-{}
+//add a travel item that's passed in as an argument and add it to the BST
+int table::insert(const client & to_add)
+{
+	if (to_add.c_name == nullptr || to_add.c_country == nullptr || to_add.c_attract == nullptr || to_add.c_time == nullptr
+        || to_add.c_transport == nullptr || to_add.c_notes == nullptr)
+		return 0;
+	int add = insert(root, to_add);
+	return add;
+}
 //recursive call for inserting
-int table::insert(node * & root, const client & to_key)
-{}
+int table::insert(node * & root, const client & to_add)
+{
+	if (!root)	//empty tree or end of traversal
+	{
+		root = new node;
+		root->trip.create(to_add);
+		root->left = root->right = nullptr;
+		return 1;
+	}
+	int same = root->trip.compare(to_add.c_name);
+	if (same == 1)	//less than data go to the left
+		insert(root->left, to_add);
+	else if (same == 2)	//equal to or more than go to the right
+		insert(root->right, to_add);
+}
 //display all travel information
 int table::display_all() const
-{}
+{
+	if (!root)	//emtpy tree
+		return 0;
+	int display = display_all(root);
+	return display;
+}
 //recursive call for displaying all
 int table::display_all(node * root) const
-{}
+{
+	if (!root)	//empty tree
+		return 0;
+	display_all(root->left);
+	root->trip.display();
+	display_all(root->right);
+	return 1;
+}
+	
 //remove by the locatin name
 int table::remove_location(char location[])
 {}

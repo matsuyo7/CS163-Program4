@@ -26,10 +26,10 @@ class travel
 		travel();	//constructor
 		~travel();	//destructor
 		int create(const client & to_copy);	//create information from the client
-		int copy(const travel & to_add);	//copy information to be inserted
 		int display() const;	//display a travel information
 		int find(char match[]) const;	//find a match with the name and return true
 		int retrieve(char match[], travel & find) const;	//retrieve travel information from the matching name
+		int compare(const char match[]);	//compare the data to add and the data already stored to know if to store left or right
 	private:
 		char * name;	//name of the location
 		char * country;	//state/city and country
@@ -51,7 +51,7 @@ class table
 	public:
 		table();	//constructor
 		~table();	//destructor
-		int insert(const client & to_key);	//add a travel item that's passed in as an argument and add it to the hash table
+		int insert(const client & to_add);	//add a travel item that's passed in as an argument and add it to the BST
 		int display_all() const;	//display all travel information
 		int remove_location(char location[]);	//remove by the locatin name
 		int retrieve_match_name(char match[], travel & find);	//retrieve the information from the particular location name match
@@ -59,7 +59,7 @@ class table
 		int height() const;	//evaluate the height of the tree
 	private:
 		node * root;
-		int insert(node * & root, const client & to_key);	//recursive call for inserting
+		int insert(node * & root, const client & to_add);	//recursive call for inserting
 		int display_all(node * root) const;	//recursive call for displaying all
 		int remove_location(node * & root, char location[]);	//recursive call to remove an item
 		int retrieve_match_name(node * root, char match[], travel & find);	//recursive call to retrieve from the list
