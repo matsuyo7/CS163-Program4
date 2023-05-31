@@ -5,15 +5,19 @@ using namespace std;
 int menu();
 void get_travel(client & your_trip, table & my_tree);
 void remove_match(char match_remove[], table & my_tree);
+void retrieve_match(char match_retrieve[], table & my_tree, travel & to_retrieve);
+void display_all_time(char match_time[], table & my_tree);
 
 int main()
 {
 	//Variables
 	table my_tree;
-	travel my_trip;
+	travel my_trip, to_retrieve;
 	client your_trip;
 	int option {0};
 	char match_remove[SIZE];
+	char match_retrieve[SIZE];
+	char match_time[SIZE];
 
 	do
         {
@@ -32,15 +36,15 @@ int main()
                 }
 		else if (option == 4)
                 {
-                        //retrieve_match(match_retrieve, my_table, to_retrieve);
+                        retrieve_match(match_retrieve, my_tree, to_retrieve);
                 }
 		else if (option == 5)
                 {
-                        //display_all_time(match_time, my_table);
+                        display_all_time(match_time, my_tree);
                 }
 		else if (option == 6)
 		{
-
+			cout << "\nHeight of tree: " << my_tree.height() << endl;
 		}
         } while (option != 7);
         return 0;
@@ -104,3 +108,24 @@ void remove_match(char match_remove[], table & my_tree)
         else
                 cout << "\nRemoved" << endl;
 }
+//Retrieve a particular match by name but not displaying it
+void retrieve_match(char match_retrieve[], table & my_tree, travel & to_retrieve)
+{
+        cout << "\nWhat location do you want to retrieve: ";
+        cin.get(match_retrieve, SIZE, '\n');
+        cin.ignore(100, '\n');
+        if (!my_tree.retrieve_match_name(match_retrieve, to_retrieve))
+                cerr << "\nCouldn't retrieve" << endl;
+        else
+                to_retrieve.display();
+}
+//Display all locations with good seasonal times to go
+void display_all_time(char match_time[], table & my_tree)
+{
+        cout << "\nWhat season(s) to look for: ";
+        cin.get(match_time, SIZE, '\n');
+        cin.ignore(100, '\n');
+        if (!my_tree.display_match_time(match_time))
+                cout << "\nCouldn't display" << endl;
+}
+

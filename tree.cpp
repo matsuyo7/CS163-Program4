@@ -14,15 +14,26 @@ table::table()
 }
 //destructor to deallocate the data members
 table::~table()
-{}
+{
+	remove_all(root);
+}
+//recursive call to deallocate memory
+int table::remove_all(node * & root)
+{
+	if (!root)
+		return 0;
+	int count = remove_all(root->left) + remove_all(root->right);
+	delete root;
+	root = nullptr;
+	return count;
+}
 //add a travel item that's passed in as an argument and add it to the BST
 int table::insert(const client & to_add)
 {
 	if (to_add.c_name == nullptr || to_add.c_country == nullptr || to_add.c_attract == nullptr || to_add.c_time == nullptr
         || to_add.c_transport == nullptr || to_add.c_notes == nullptr)
 		return 0;
-	int add = insert(root, to_add);
-	return add;
+	return insert(root, to_add);
 }
 //recursive call for inserting
 int table::insert(node * & root, const client & to_add)
@@ -45,8 +56,7 @@ int table::display_all() const
 {
 	if (!root)	//emtpy tree
 		return 0;
-	int display = display_all(root);
-	return display;
+	return display_all(root);
 }
 //recursive call for displaying all
 int table::display_all(node * root) const
@@ -64,19 +74,17 @@ int table::remove_location(char location[])
 {
 	if (!root)	//emptry tree
 		return 0;
-	int remove = remove_location(root, location);
-	return remove;
+	return remove_location(root, location);
 }
 //recursive call to remove an item
 int table::remove_location(node * & root, char location[])
 {
-	if (!root || !root->trip.find(location))	//stop traversing or name is not found
+	if (!root)	//stop traversing
 		return 0;
 	node * hold = nullptr;
-	if (!root->trip.find(location))
+	if (!root->trip.find(location))	//traverse until found a match
 	{
-		remove_location(root->left, location);
-		remove_location(root->right, location);
+		return remove_location(root->left, location) + remove_location(root->right, location);
 	}
 	if (!root->left && !root->right)	//leaf
 	{
@@ -118,19 +126,50 @@ int table::remove_location(node * & root, char location[])
 }
 //retrieve the information from the particular location name match
 int table::retrieve_match_name(char match[], travel & find)
-{}
+{
+	if (!root)
+		return 0;
+	return retrieve_match_name(root, match, find);
+}
 //recursive call to retrieve from the list
 int table::retrieve_match_name(node * root, char match[], travel & find)
-{}
+{
+	if (!root)
+		return 0;
+	if (root->trip.retrieve(match, find))
+		return 1;
+	return retrieve_match_name(root->left, match, find) + retrieve_match_name(root->right, match, find);
+}
 //display by the seasonal match
-int table::display_match_time(char season[]) const
-{}
+int table::display_match_time(char season[])
+{
+	if (!root)
+		return 0;
+	return display_match_time(root, season);
+}
 //recursive call to display by the seasonal match
 int table::display_match_time(node * root, char season[])
-{}
+{
+	if (!root)
+		return 0;
+	if (root->trip.find(season))
+	{
+		root->trip.display();
+		return 1;
+	}
+	return display_match_time(root->left, season) + display_match_time(root->right, season);
+}
 //evaluate the height of the tree
 int table::height() const
-{}
+{
+	if (!root)
+		return 0;
+	return height(root);
+}
 //recursive call to evaluate the height of the tree
 int table::height(node * root) const
-{}
+{
+	if (!root)
+		return 0;
+	return max(height(root->left), height(root->right)) + 1;
+}

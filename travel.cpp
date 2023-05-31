@@ -87,23 +87,35 @@ int travel::retrieve(char match[], travel & find) const
                 return 0;
         if (!strcmp(match, name))
         {
-                if (!find.name)
-                        find.name = new char[1000];
+                if (find.name)
+			delete [] find.name;
+                        //find.name = new char[1000];
+		find.name = new char [strlen(name) + 1];
                 strcpy(find.name, name);
-                if (!find.country)
-                        find.country = new char[1000];
+                if (find.country)
+			delete [] find.country;
+                        //find.country = new char[1000];
+		find.country = new char [strlen(country) + 1];
                 strcpy(find.country, country);
-                if (!find.attract)
-                        find.attract = new char[1000];
+                if (find.attract)
+			delete [] find.attract;
+                        //find.attract = new char[1000];
+		find.attract = new char [strlen(attract) + 1];
                 strcpy(find.attract, attract);
-                if (!find.time)
-                        find.time = new char[1000];
+                if (find.time)
+			delete [] find.time;
+                        //find.time = new char[1000];
+		find.time = new char [strlen(time) + 1];
                 strcpy(find.time, time);
-                if (!find.transport)
-                        find.transport = new char[1000];
+                if (find.transport)
+			delete [] find.transport;
+                        //find.transport = new char[1000];
+		find.transport = new char [strlen(transport) + 1];
                 strcpy(find.transport, transport);
-                if (!find.notes)
-                        find.notes = new char[1000];
+                if (find.notes)
+			delete [] find.notes;
+                        //find.notes = new char[1000];
+		find.notes = new char [strlen(notes) + 1];
                 strcpy(find.notes, notes);
                 return 1;
         }

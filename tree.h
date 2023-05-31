@@ -56,7 +56,7 @@ class table
 		int display_all() const;	//display all travel information
 		int remove_location(char location[]);	//remove by the locatin name
 		int retrieve_match_name(char match[], travel & find);	//retrieve the information from the particular location name match
-		int display_match_time(char season[]) const;	//display by the seasonal match
+		int display_match_time(char season[]);	//display by the seasonal match
 		int height() const;	//evaluate the height of the tree
 	private:
 		node * root;
@@ -66,4 +66,5 @@ class table
 		int retrieve_match_name(node * root, char match[], travel & find);	//recursive call to retrieve from the list
 		int display_match_time(node * root, char season[]);	//recursive call to display by the seasonal match
 		int height(node * root) const;	//recursive call to evaluate the height of the tree
+		int remove_all(node * & root);	//recursive call to deallocate memory
 };
