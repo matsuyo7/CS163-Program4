@@ -4,7 +4,7 @@ using namespace std;
 //Prototypes
 int menu();
 void get_travel(client & your_trip, table & my_tree);
-
+void remove_match(char match_remove[], table & my_tree);
 
 int main()
 {
@@ -13,6 +13,7 @@ int main()
 	travel my_trip;
 	client your_trip;
 	int option {0};
+	char match_remove[SIZE];
 
 	do
         {
@@ -27,7 +28,7 @@ int main()
                 }
 		else if (option == 3)
                 {
-                        //remove_match(match_remove, my_table);
+                        remove_match(match_remove, my_tree);
                 }
 		else if (option == 4)
                 {
@@ -91,4 +92,15 @@ void get_travel(client & your_trip, table & my_tree)
         cin.ignore(100, '\n');
         if (!my_tree.insert(your_trip))
                 cerr << "\nCouldn't insert" << endl;
+}
+//Remove by a matching location name
+void remove_match(char match_remove[], table & my_tree)
+{
+        cout << "\nWhat location do you want to remove: ";
+        cin.get(match_remove, SIZE, '\n');
+        cin.ignore(100, '\n');
+        if (!my_tree.remove_location(match_remove))
+                cout << "\nCouldn't remove" << endl;
+        else
+                cout << "\nRemoved" << endl;
 }

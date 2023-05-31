@@ -119,3 +119,13 @@ int travel::compare(const char match[])
 	else
 		return 2;
 }
+//copy the IOS data to the current root
+int travel::copy_name(const travel & to_copy)
+{
+	 if (!name)
+		 return 0;
+	 delete [] name;
+	 name = new char [strlen(to_copy.name) + 1];
+	 strcpy(name, to_copy.name);
+	 return 1;
+}

@@ -30,6 +30,7 @@ class travel
 		int find(char match[]) const;	//find a match with the name and return true
 		int retrieve(char match[], travel & find) const;	//retrieve travel information from the matching name
 		int compare(const char match[]);	//compare the data to add and the data already stored to know if to store left or right
+		int copy_name(const travel & to_copy);	//copy the IOS data to the current root
 	private:
 		char * name;	//name of the location
 		char * country;	//state/city and country

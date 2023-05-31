@@ -61,10 +61,61 @@ int table::display_all(node * root) const
 	
 //remove by the locatin name
 int table::remove_location(char location[])
-{}
+{
+	if (!root)	//emptry tree
+		return 0;
+	int remove = remove_location(root, location);
+	return remove;
+}
 //recursive call to remove an item
 int table::remove_location(node * & root, char location[])
-{}
+{
+	if (!root || !root->trip.find(location))	//stop traversing or name is not found
+		return 0;
+	node * hold = nullptr;
+	if (!root->trip.find(location))
+	{
+		remove_location(root->left, location);
+		remove_location(root->right, location);
+	}
+	if (!root->left && !root->right)	//leaf
+	{
+		delete root;
+		root = nullptr;
+		return 1;
+	}
+	else if (!root->left || !root->right)	//one child
+	{
+		if (root->left && !root->right)	//left child isn't null
+		{
+			hold = root->left;
+			delete root;
+			root = hold;
+		}
+		else if (!root->left && root->right)	//right child isn't null
+		{
+			hold = root->right;
+			delete root;
+			root = hold;
+		}
+		return 1;
+	}
+	else if (root->left && root->right)	//two children
+	{
+		node * current = root->right;
+		node * previous = current;
+		while (current->left)
+		{
+			previous = current;
+			current = current->left;
+		}
+		root->trip.copy_name(current->trip);
+		hold = current->right;
+		delete current;
+		previous->left = hold;
+		return 1;
+	}
+}
 //retrieve the information from the particular location name match
 int table::retrieve_match_name(char match[], travel & find)
 {}
