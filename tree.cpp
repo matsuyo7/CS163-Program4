@@ -22,10 +22,12 @@ int table::remove_all(node * & root)
 {
 	if (!root)
 		return 0;
-	int count = remove_all(root->left) + remove_all(root->right);
-	delete root;
+	remove_all(root->left);
+	remove_all(root->right);
+	if (root)
+		delete root;
 	root = nullptr;
-	return count;
+	return 1;
 }
 //add a travel item that's passed in as an argument and add it to the BST
 int table::insert(const client & to_add)
@@ -50,6 +52,7 @@ int table::insert(node * & root, const client & to_add)
 		insert(root->left, to_add);
 	else if (same == 2)	//equal to or more than go to the right
 		insert(root->right, to_add);
+	return 1;
 }
 //display all travel information
 int table::display_all() const
@@ -90,39 +93,44 @@ int table::remove_location(node * & root, char location[])
 	{
 		delete root;
 		root = nullptr;
-		return 1;
 	}
-	else if (!root->left || !root->right)	//one child
+	else if (root->left && !root->right)	//left child isn't null
 	{
-		if (root->left && !root->right)	//left child isn't null
-		{
-			hold = root->left;
-			delete root;
-			root = hold;
-		}
-		else if (!root->left && root->right)	//right child isn't null
-		{
-			hold = root->right;
-			delete root;
-			root = hold;
-		}
-		return 1;
+		hold = root->left;
+		delete root;
+		root = hold;
 	}
-	else if (root->left && root->right)	//two children
+	else if (!root->left && root->right)	//right child isn't null
+	{
+		hold = root->right;
+		delete root;
+		root = hold;
+	}
+	else
 	{
 		node * current = root->right;
 		node * previous = current;
-		while (current->left)
+		if (!current->left)
 		{
-			previous = current;
-			current = current->left;
+			hold = current->right;
+			root->trip.copy_name(current->trip);
+			delete current;
+			root->right = hold;
 		}
-		root->trip.copy_name(current->trip);
-		hold = current->right;
-		delete current;
-		previous->left = hold;
-		return 1;
+		else
+		{
+			while (current->left)
+			{
+				previous = current;
+				current = current->left;
+			}
+			root->trip.copy_name(current->trip);
+			hold = current->right;
+			delete current;
+			previous->left = hold;
+		}
 	}
+	return 1;
 }
 //retrieve the information from the particular location name match
 int table::retrieve_match_name(char match[], travel & find)
